@@ -23,6 +23,7 @@ def main():
     """ Список файлов с расширением lst"""
     filelist = []
 
+    #TODO: Проверить, как ведет себя программа при переключении режима на единицу (когда все будет отлажено)
     """ Печатать файл и строку начиная с нуля (0) или с единицы (1) """
     START_WITH_ZERO = 0
 
@@ -40,7 +41,6 @@ def main():
         filelist = refresh_filelist()
         print_content(current_mode, inserted_list, deleted_list, filelist, START_WITH_ZERO, selected_file_num)
         current_mode, selected_file_num, inserted_list, deleted_list = prompt_input(current_mode, filelist, START_WITH_ZERO, selected_file_num, inserted_list, deleted_list, default_key)
-        #print(current_mode)
 
 """ Возвращаем список файлов с нужным расширением """
 def refresh_filelist(extension="lst"):
@@ -73,6 +73,7 @@ def print_filelist(filelist, START_WITH_ZERO):
         print("No files found!")
 
 def add_file(filelist, extension="lst"):
+    #TODO: Проверить, как ведет себя программа, при указывании имени уже существующего файла
     filename = ""
     while not(filename):
         filename = str(input("Enter new file name:")).strip().lower()
@@ -109,11 +110,10 @@ def check_is_file_empty(filelist, selected_file_num):
     return i
 
 def print_file_content(filelist, selected_file_num, inserted_list, deleted_list, START_WITH_ZERO):
-    #print("inserted_list = ", inserted_list)
-    #print("deleted_list = ", deleted_list)
+    #TODO: когда удаляешь первую и последнюю строку происходит звиздец
     #TODO: не обработана ситуация, если удалены все строки в файле и в листе с новыми значениями
     if check_is_file_empty(filelist, selected_file_num) == 0 and not(inserted_list):
-        print("No items found!")
+        print("No items are in list")
     else:
         try:
             file = open(filelist[selected_file_num], "r")
@@ -145,7 +145,7 @@ def delete_line(deleted_list, START_WITH_ZERO):
     print("Start delete_line", deleted_list)
     line = int(input("Delete item number (or " + str(START_WITH_ZERO - 1) + " to cancel):"))
     if str(line) and line != START_WITH_ZERO - 1:
-        #TODO: Валидация существования данной строки
+        #TODO: Валидация существования данной строки + агриться на левые символы
         if not deleted_list:
             print("deleted_list is empty, added one element")
             deleted_list.append(int(line))
@@ -255,6 +255,7 @@ def prompt_input(current_mode, filelist, START_WITH_ZERO, selected_file_num, ins
                 while user_key:
                     user_key = input("Press Enter to continue:")
     elif current_mode == "FILE":
+        #TODO: Default_key не работает
         DELETE = "" if check_is_file_empty(filelist, selected_file_num) == 0 else "  [D]elete"
         SAVE = "" if not inserted_list and not deleted_list else "  [S]ave"
         default_key = "a" if not default_key else default_key
@@ -282,6 +283,7 @@ def prompt_input(current_mode, filelist, START_WITH_ZERO, selected_file_num, ins
                 user_key = input("Press Enter to continue:")
     return current_mode, selected_file_num, inserted_list, deleted_list
 
-
+    #TODO: Записи должны быть в алфавитном порядке 
+    #TODO: При печати записей необходимо выравнивать ширину порядкового номера
 
 main()
